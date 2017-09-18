@@ -6,7 +6,7 @@ const {cmd, download, AddOn, Application} = require('../lib/casti')
 
 // --- Define the FS-Buckets Addon ---
 let bucketAddOn = AddOn.of({
-  name:"my-bucket-09182017-02",
+  name:"my-bucket-09182017-03",
   type:"fs-bucket",
   plan:"s",
   organization:"wey-yu", 
@@ -15,7 +15,7 @@ let bucketAddOn = AddOn.of({
 
 // --- Define the application ---
 let myGitBucket = Application.of({
-  name:"my-gitbucket-09182017-02",
+  name:"my-gitbucket-09182017-03",
   type:"war",
   flavor:"M",
   organization:"wey-yu",
