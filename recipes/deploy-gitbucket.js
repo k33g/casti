@@ -6,7 +6,7 @@ const {cmd, download, AddOn, Application} = require('../lib/casti')
 
 // --- Define the FS-Buckets Addon ---
 let bucketAddOn = AddOn.of({
-  name:"my-bucket-0918",
+  name:"my-bucket-09182017",
   type:"fs-bucket",
   plan:"s",
   organization:"wey-yu", 
@@ -15,7 +15,7 @@ let bucketAddOn = AddOn.of({
 
 // --- Define the application ---
 let myGitBucket = Application.of({
-  name:"my-gitbucket-0918",
+  name:"my-gitbucket-09182017",
   type:"war",
   flavor:"M",
   organization:"wey-yu",
@@ -36,7 +36,7 @@ let createApplication = (nextStep) => {
   // --- Provision the application and create the local directory of the project ---
   myGitBucket.create({
     failure: error => console.log("😡 application creation", error),
-    success: out => nextStep()
+    success: out => {if(nextStep) { nextStep() }}
   })
 }
 
