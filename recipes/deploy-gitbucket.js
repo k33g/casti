@@ -6,7 +6,7 @@ const {cmd, download, AddOn, Application} = require('../lib/casti')
 
 // --- Define the FS-Buckets Addon ---
 let bucketAddOn = AddOn.of({
-  name:"my-bucket-09182017-01",
+  name:"my-bucket-09182017-02",
   type:"fs-bucket",
   plan:"s",
   organization:"wey-yu", 
@@ -15,7 +15,7 @@ let bucketAddOn = AddOn.of({
 
 // --- Define the application ---
 let myGitBucket = Application.of({
-  name:"my-gitbucket-09182017-01",
+  name:"my-gitbucket-09182017-02",
   type:"war",
   flavor:"M",
   organization:"wey-yu",
@@ -64,17 +64,16 @@ let getTheWarFile = (nextStep) => {
   }, 
   {
     failure: error => console.log("😡 copying assets", error),
-    success: out => nextStep()
+    success: out => {
+      // ---  set the war name to run ---
+      myGitBucket.createCleverJarJsonFile({jarName:"gitbucket.war"},{
+        failure: error => console.log("😡 json configuration file", error),
+        success: out => nextStep()
+      })
+    }
   })
 }
 
-let setWarNameToRun = (nextStep) => {
-  // ---  set the war name to run ---
-  myGitBucket.createCleverJarJsonFile({jarName:"gitbucket.war"},{
-    failure: error => console.log("😡 json configuration file", error),
-    success: out => nextStep()
-  })
-}
 
 let initialiseRepository = (nextStep) => {
   // ---  Initialise the Git repository ---
@@ -98,7 +97,6 @@ createAddOn(
     linkAddonToApplication(
       defineStorageFolder(
         getTheWarFile(
-          setWarNameToRun(
-            initialiseRepository(deploy)))))))
+          initialiseRepository(deploy))))))
 
 
