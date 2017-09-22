@@ -4,7 +4,7 @@ const {cmd, download, AddOn, Application} = require('../lib/casti')
 
 // --- Define the FS-Buckets Addon ---
 let bucketAddOn = AddOn.of({
-  name:"my-bucket-09182017-04",
+  name:"my-bucket-09222017-09",
   type:"fs-bucket",
   plan:"s",
   organization:"wey-yu", 
@@ -13,7 +13,7 @@ let bucketAddOn = AddOn.of({
 
 // --- Define the application ---
 let myGitBucket = Application.of({
-  name:"my-gitbucket-09182017-04",
+  name:"my-gitbucket-09222017-09",
   type:"war",
   flavor:"M",
   organization:"wey-yu",
@@ -21,20 +21,22 @@ let myGitBucket = Application.of({
   envvars:["JAVA_VERSION=8", "GITBUCKET_HOME=/app/storage/.gitbucket", "PORT=8080"],
 })
 
-
 // --- Steps ---
 async function deployGitBucket() {
   await bucketAddOn.create();
   await myGitBucket.create();
-  await myGitBucket.linkToAddon({name:bucketAddOn.name});
+  await myGitBucket.connectToBucket({name:bucketAddOn.name, path:"storage"})
 
-  var envvars = await myGitBucket.getEnvironmentVariables()
-
-  await myGitBucket.attachStorageFolderToBucket({envvars:envvars});
-  await download({
-    from: "https://github.com/gitbucket/gitbucket/releases/download/4.15.0/gitbucket.war",
-    to: `${myGitBucket.path}/gitbucket.war`
-  });
+  await myGitBucket.createExecutableShellScript({
+    scriptName: "install.sh",
+    shell:`
+      #!/bin/sh
+      echo "GitBucket setup and deployment is started"
+      curl -L https://github.com/gitbucket/gitbucket/releases/download/4.15.0/gitbucket.war --output gitbucket.war
+    `
+  })
+  
+  await myGitBucket.addPreBuildHook({hook:"./install.sh"})
   await myGitBucket.createCleverJarJsonFile({jarName:"gitbucket.war"});
   await myGitBucket.gitInit();
   await myGitBucket.gitPush();

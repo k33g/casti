@@ -14,8 +14,10 @@ All started here: https://medium.com/@k33g_org/scripting-clever-tools-with-nodej
 - create and deploy a MongoDb database on Clever Cloud: `./recipes/create-addon-mongodb.js`
 - deploy GitBucket on Clever Cloud: `./recipes/deploy-gitbucket.js`
   - see blog post about this on : https://medium.com/@k33g_org/create-a-devops-platform-with-clever-tools-and-nodejs-part-1-dvcs-2f9e8d0657a9
-- a more readable version of deploy GitBucket on Clever Cloud: `./recipes/deploy-gitbucket.async.js`
+- deploy GitBucket on Clever Cloud with pre build hook: `./recipes/deploy-gitbucket.prebuild.hook.js`
 - deploy Jenkins on Clever Cloud: `./recipes/deploy-jenkins.js`
+- deploy Jenkins on Clever Cloud with pre build hook: `./recipes/deploy-jenkins.prebuild.hook.js`
+- deploy RocketChat: `./recipes/deploy-rocketchat.js`
 - ... more to come
 
 ## btw
