@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-const {cmd, download, AddOn, Application} = require('../lib/casti')
+const {AddOn, Application} = require('../lib/casti')
 
 // --- Define the FS-Buckets Addon ---
 let bucketAddOn = AddOn.of({
-  name:"my-bucket-09222017-01",
+  name:"my-bucket-09222017-02",
   type:"fs-bucket",
   plan:"s",
   organization:"wey-yu", 
@@ -13,7 +13,7 @@ let bucketAddOn = AddOn.of({
 
 // --- Define the application ---
 let myGitBucket = Application.of({
-  name:"my-gitbucket-09222017-01",
+  name:"my-gitbucket-09222017-02",
   type:"war",
   flavor:"M",
   organization:"wey-yu",
@@ -27,11 +27,11 @@ async function deployGitBucket() {
   await myGitBucket.create();  
   await myGitBucket.connectToBucket({name:bucketAddOn.name, path:"storage"})
   
-  await download({
+  await myGitBucket.download({
     from: "https://github.com/gitbucket/gitbucket/releases/download/4.15.0/gitbucket.war",
-    to: `${myGitBucket.path}/gitbucket.war`
+    to: `gitbucket.war`
   });
-  
+
   await myGitBucket.createCleverJarJsonFile({jarName:"gitbucket.war"});
   await myGitBucket.gitInit();  
   await myGitBucket.gitPush();
@@ -44,5 +44,4 @@ deployGitBucket()
     console.log(`🌍 http://${myGitBucket.name}.cleverapps.io`)
   })
   .catch(error => console.log("😡 ouch!", error))
-
 

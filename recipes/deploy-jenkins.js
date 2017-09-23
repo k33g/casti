@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-const {cmd, download, AddOn, Application} = require('../lib/casti')
+const {AddOn, Application} = require('../lib/casti')
 
 // --- Define the FS-Buckets Addon ---
 let bucketAddOn = AddOn.of({
-  name:"my-jenkins-bucket-20170922-00",
+  name:"my-jenkins-bucket-20170922-01",
   type:"fs-bucket",
   plan:"s",
   organization:"wey-yu", 
@@ -13,7 +13,7 @@ let bucketAddOn = AddOn.of({
 
 // --- Define the application ---
 let myJenkins = Application.of({
-  name:"my-jenkins-20170922-00",
+  name:"my-jenkins-20170922-01",
   type:"war",
   flavor:"M",
   organization:"wey-yu",
@@ -27,9 +27,9 @@ async function deployJenkins() {
   await myJenkins.create()
   await myJenkins.connectToBucket({name:bucketAddOn.name, path: "storage"})
   
-  await download({
+  await myJenkins.download({
     from: "http://mirrors.jenkins.io/war/latest/jenkins.war",
-    to: `${myJenkins.path}/jenkins.war`
+    to: `jenkins.war`
   })
 
   await myJenkins.createCleverJarJsonFile({jarName:"jenkins.war"})
